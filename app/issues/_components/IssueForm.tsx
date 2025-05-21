@@ -37,7 +37,13 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const onSubmitHandler = async (data: IssueFromData) => {
     try {
       setSubmitting(true);
-      await axios.post('/api/issues', data);
+
+      if (issue) {
+        await axios.patch('/api/issues/' + issue.id, data);
+      } else {
+        await axios.post('/api/issues', data);
+      }
+
       router.push('/issues');
     } catch (error) {
       setSubmitting(false);
@@ -84,7 +90,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
               Processing <Spinner />
             </span>
           ) : (
-            <span>Submit New Issue</span>
+            <span>{issue ? 'Update Issue' : 'Submit New Issue'}</span>
           )}
         </Button>
       </form>
