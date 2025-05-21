@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { issueId: string } }
+  { params }: { params: Promise<{ issueId: string }> }
 ) {
   const body = await request.json();
   const validation = issueSchema.safeParse(body);
@@ -13,7 +13,7 @@ export async function PATCH(
     return NextResponse.json(validation.error.format(), { status: 400 });
 
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.issueId) },
+    where: { id: parseInt((await params).issueId) },
   });
 
   if (!issue)
