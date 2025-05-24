@@ -1,23 +1,21 @@
+import SkeletonComponent from '@/app/components/SkeletonComponent';
 import { Box, Card, Flex } from '@radix-ui/themes';
-
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 const LoadingIssueDetailPage = () => {
   return (
     <Box className='max-w-xl'>
-      <Skeleton />
+      <SkeletonComponent />
       <Flex
         gap='5'
         my='3'
         align='center'>
-        <Skeleton width='5rem' />
-        <Skeleton width='8rem' />
+        <SkeletonComponent width='5rem' />
+        <SkeletonComponent width='8rem' />
       </Flex>
       <Card
         className='prose'
         mt='5'>
-        <Skeleton count={3} />
+        <SkeletonComponent count={3} />
       </Card>
     </Box>
   );
