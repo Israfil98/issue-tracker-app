@@ -1,13 +1,17 @@
+import autOptions from '@/app/auth/authOptions';
 import SkeletonComponent from '@/app/components/SkeletonComponent';
 import { Table } from '@radix-ui/themes';
+import { getServerSession } from 'next-auth';
 import IssueToolbar from './IssueToolbar';
 
-const LoadingIssuesPage = () => {
+const LoadingIssuesPage = async () => {
+  const session = await getServerSession(autOptions);
+
   const issues = [1, 2, 3, 4, 5];
 
   return (
     <div>
-      <IssueToolbar />
+      {session && <IssueToolbar />}
 
       <Table.Root variant='surface'>
         <Table.Header>

@@ -1,5 +1,7 @@
+import autOptions from '@/app/auth/authOptions';
 import { prisma } from '@/prisma/client';
 import { Box, Flex, Grid } from '@radix-ui/themes';
+import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const IssueDetailPage = async ({ params }: Props) => {
+  const session = await getServerSession(autOptions);
+
   const issue = await prisma.issue.findUnique({
     where: {
       id: parseInt((await params).issueId),
@@ -24,14 +28,16 @@ const IssueDetailPage = async ({ params }: Props) => {
       <Box className='md:col-span-4'>
         <IssueDetails issue={issue} />
       </Box>
-      <Box>
-        <Flex
-          direction='column'
-          gap='3'>
-          <EditButton issueId={issue.id} />
-          <DeleteButton issueId={issue.id} />
-        </Flex>
-      </Box>
+      {session && (
+        <Box>
+          <Flex
+            direction='column'
+            gap='3'>
+            <EditButton issueId={issue.id} />
+            <DeleteButton issueId={issue.id} />
+          </Flex>
+        </Box>
+      )}
     </Grid>
   );
 };
