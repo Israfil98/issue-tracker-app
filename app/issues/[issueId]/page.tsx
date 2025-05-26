@@ -3,6 +3,7 @@ import { prisma } from '@/prisma/client';
 import { Box, Flex, Grid } from '@radix-ui/themes';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
+import AssigneeSelect from './AssigneeSelect';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 import IssueDetails from './IssueDetails';
@@ -33,6 +34,7 @@ const IssueDetailPage = async ({ params }: Props) => {
           <Flex
             direction='column'
             gap='3'>
+            <AssigneeSelect />
             <EditButton issueId={issue.id} />
             <DeleteButton issueId={issue.id} />
           </Flex>
