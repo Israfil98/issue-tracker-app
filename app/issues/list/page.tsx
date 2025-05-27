@@ -1,4 +1,5 @@
 import autOptions from '@/app/auth/authOptions';
+import Pagination from '@/app/components/Pagination';
 import { prisma } from '@/prisma/client';
 import { Issue, Status } from '@prisma/client';
 import { ArrowUpIcon } from '@radix-ui/react-icons';
@@ -9,7 +10,7 @@ import IssueStatusBadge from '../../components/IssueStatusBadge';
 import IssueToolbar from './IssueToolbar';
 
 interface Props {
-  searchParams: Promise<{ status: Status; orderBy: keyof Issue }>;
+  searchParams: Promise<{ status: Status; orderBy: keyof Issue; page: string }>;
 }
 
 interface TableColumn {
@@ -36,17 +37,30 @@ const IssuesPage = async ({ searchParams }: Props) => {
     ? { [orderBy]: 'asc' }
     : undefined;
 
+  const page = parseInt((await searchParams).page) || 1;
+  const pageSize = 10;
+
   const issues = await prisma.issue.findMany({
     where: {
       status: currentFilterStatus,
     },
     orderBy: currentOrderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const issueCount = await prisma.issue.count({
+    where: { status: currentFilterStatus },
   });
 
   return (
     <div>
       {session && <IssueToolbar />}
-
+      <Pagination
+        pageSize={pageSize}
+        itemCount={issueCount}
+        currentPage={page}
+      />
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
