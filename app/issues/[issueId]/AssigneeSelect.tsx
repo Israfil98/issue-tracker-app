@@ -30,10 +30,11 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
         onValueChange={assignUserId}>
         <Select.Trigger
           placeholder='Assign...'
-          variant='soft'
           radius='large'
         />
-        <Select.Content>
+        <Select.Content
+          color='violet'
+          position='popper'>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
             <Select.Item value='unassign'>Unassigned</Select.Item>
